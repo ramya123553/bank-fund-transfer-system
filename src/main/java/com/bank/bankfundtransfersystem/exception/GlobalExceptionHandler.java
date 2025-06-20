@@ -23,5 +23,18 @@ public class GlobalExceptionHandler {
 		
 	}
 	
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<?> handleGenericException(Exception ex) {
+		Map<String, Object> errorDetails = new HashMap<>();
+		errorDetails.put("timestamp", LocalDateTime.now());
+		errorDetails.put("message", "Internal server error");
+		errorDetails.put("details", ex.getMessage());
+		errorDetails.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+		
+		return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+		
+	}
+	
+	
 
 }
