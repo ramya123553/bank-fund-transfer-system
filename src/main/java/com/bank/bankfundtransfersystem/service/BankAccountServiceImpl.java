@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bank.bankfundtransfersystem.exception.ResourceNotFoundException;
 import com.bank.bankfundtransfersystem.model.BankAccount;
 import com.bank.bankfundtransfersystem.repository.BankAccountRepository;
 
@@ -31,24 +32,26 @@ public class BankAccountServiceImpl implements BankAccountService{
 
 	@Override
 	public Optional<BankAccount> getAccountById(Long id) {
-		return bankAccountRepository.findById(id);
+		return Optional.ofNullable(bankAccountRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Bank account not found with ID: " + id)));
 	}
 
 	@Override
 	public BankAccount updateBankAccount(Long id, BankAccount updatedAccount) {
-		return bankAccountRepository.findById(id)
-				.map(existing -> {
-					existing.setAccountHolderName(updatedAccount.getAccountHolderName());
-					existing.setBalance(updatedAccount.getBalance());
-					return bankAccountRepository.save(existing);
-					
-				})
-				.orElseThrow(() -> new RuntimeException("BankAccount not found with id: " + id));
+		BankAccount existing = bankAccountRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Bank account not found with ID: " + id));
+		
+		existing.setAccountHolderName(updatedAccount.getAccountHolderName());
+		existing.setBalance(updatedAccount.getBalance());
+		existing.setAccountNumber(updatedAccount.getAccountNumber());
+		return bankAccountRepository.save(existing);
 	}
 
 	@Override
 	public void deleteBankAccount(Long id) {
-		bankAccountRepository.deleteById(id);
+		BankAccount existing = bankAccountRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Bank account not found with ID: " + id));
+		bankAccountRepository.delete(existing);
 		
 	}
 
