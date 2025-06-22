@@ -26,9 +26,9 @@ public class TransactionController {
 	
 	@PostMapping("/transfer")
 	public Transaction createTransaction(
-			@RequestParam Long senderId,
-			@RequestParam Long receiverId,
-			@RequestParam Double amount) {
+			@RequestParam (name = "senderId") Long senderId,
+			@RequestParam (name = "receiverId") Long receiverId,
+			@RequestParam  Double amount) {
 		return transactionService.createTransaction(senderId, receiverId, amount);
 	}
 	
@@ -44,9 +44,9 @@ public class TransactionController {
 	
 	@PostMapping("/transferfunds")
 	public ResponseEntity<String> transferFunds(
-			@RequestParam Long fromAccountId,
-	        @RequestParam Long toAccountId,
-	        @RequestParam double amount) {
+			@RequestParam (name = "fromAccountId") Long fromAccountId,
+	        @RequestParam (name = "toAccountId") Long toAccountId,
+	        @RequestParam (name = "amount") double amount) {
 	    String result = transactionService.transferFunds(fromAccountId, toAccountId, amount);
 	    return ResponseEntity.ok(result);
 	}
