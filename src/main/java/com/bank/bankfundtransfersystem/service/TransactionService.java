@@ -11,5 +11,7 @@ public interface TransactionService {
 	List<Transaction> getAllTransactions();
 	
 	Transaction getTransactionById(Long id);
+	
+	String transferFunds(Long senderId, Long receiverId, double amount);
 
 }

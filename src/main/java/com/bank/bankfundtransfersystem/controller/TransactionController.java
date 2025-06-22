@@ -3,6 +3,7 @@ package com.bank.bankfundtransfersystem.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,5 +41,15 @@ public class TransactionController {
 	public Transaction getTransactionById(@RequestParam (name = "id") Long id) {
 		return transactionService.getTransactionById(id);
 	}
+	
+	@PostMapping("/transferfunds")
+	public ResponseEntity<String> transferFunds(
+			@RequestParam Long fromAccountId,
+	        @RequestParam Long toAccountId,
+	        @RequestParam double amount) {
+	    String result = transactionService.transferFunds(fromAccountId, toAccountId, amount);
+	    return ResponseEntity.ok(result);
+	}
 
 }
+	
