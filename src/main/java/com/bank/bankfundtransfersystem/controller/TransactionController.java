@@ -28,7 +28,7 @@ public class TransactionController {
 	public Transaction createTransaction(
 			@RequestParam (name = "senderId") Long senderId,
 			@RequestParam (name = "receiverId") Long receiverId,
-			@RequestParam (name = "amount") Double amount) {
+			@RequestParam  Double amount) {
 		return transactionService.createTransaction(senderId, receiverId, amount);
 	}
 	
