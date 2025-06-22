@@ -3,7 +3,6 @@ package com.bank.bankfundtransfersystem.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bank.bankfundtransfersystem.exception.ResourceNotFoundException;
@@ -18,7 +17,7 @@ public class TransactionServiceImpl implements TransactionService {
 	private final TransactionRepository transactionRepository;
 	private final BankAccountRepository bankAccountRepository;
 	
-	@Autowired
+	
 	public TransactionServiceImpl(TransactionRepository transactionRepository,
 			BankAccountRepository bankAccountRepository) {
 		this.transactionRepository = transactionRepository;
