@@ -65,4 +65,33 @@ public class TransactionServiceImpl implements TransactionService {
 				.orElseThrow(() -> new ResourceNotFoundException("Transaction not found with ID: " + id));
 	}
 
+	@Override
+	public String transferFunds(Long senderId, Long receiverId, double amount) {
+		BankAccount fromAccount = bankAccountRepository.findById(senderId)
+				.orElseThrow(() -> new ResourceNotFoundException("From Account not found"));
+		BankAccount toAccount = bankAccountRepository.findById(receiverId)
+				.orElseThrow(() -> new ResourceNotFoundException("To Account not found"));
+		
+		if(fromAccount.getBalance() < amount) {
+			return "Insuffient balance in source account.";
+		}
+		
+		fromAccount.setBalance(fromAccount.getBalance() - amount);
+		toAccount.setBalance(toAccount.getBalance() + amount);
+		
+		bankAccountRepository.save(fromAccount);
+		bankAccountRepository.save(toAccount);
+		
+		Transaction transaction = new Transaction();
+        transaction.setReceiverAccountId(senderId);
+        transaction.setReceiverAccountId(receiverId);
+        transaction.setAmount(amount);
+        transaction.setTransactionTime(LocalDateTime.now());
+        
+        transactionRepository.save(transaction);
+        
+        return "Transfer successful.";
+		
+	}
+
 }
